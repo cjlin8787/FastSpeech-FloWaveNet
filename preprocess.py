@@ -1,10 +1,8 @@
-import torch
-import numpy as np
-import shutil
 import os
+import shutil
 
-from data import ljspeech
 import hparams as hp
+from data import ljspeech
 
 
 def preprocess_ljspeech(filename):
@@ -26,7 +24,7 @@ def write_metadata(metadata, out_dir):
 
 
 def main():
-    path = os.path.join("data", "LJSpeech-1.1")
+    path = os.path.join('data')
     preprocess_ljspeech(path)
 
 

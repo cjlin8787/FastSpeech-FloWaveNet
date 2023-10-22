@@ -1,52 +1,41 @@
-# FastSpeech-Pytorch
-The Implementation of FastSpeech Based on Pytorch.
-
-## Update (2020/07/20)
-1. Optimize the training process.
-2. Optimize the implementation of length regulator.
-3. Use the same hyper parameter as FastSpeech2.
-4. **The measures of the 1, 2 and 3 make the training process 3 times faster than before.**
-5. **Better speech quality.**
-
-## Model
-<div style="text-align: center">
-    <img src="img/fastspeech_structure.png" style="max-width:100%;">
-</div>
-
-## My Blog
-- [FastSpeech Reading Notes](https://zhuanlan.zhihu.com/p/67325775)
-- [Details and Rethinking of this Implementation](https://zhuanlan.zhihu.com/p/67939482)
+# FastSpeech-FloWaveNet
+This repository is adapted from [FastSpeech-Pytorch](https://github.com/xcmyz/FastSpeech) from `xcmyz` and [FloWaveNet](https://github.com/ksw0306/FloWaveNet) from `kws0306`. Instead of using WaveGlow, FastSpeech from this repository use FloWaveNet as the vocoder. Many thanks to the original authors. Please check their repositories for more detailed description.
 
 ## Prepare Dataset
 1. Download and extract [LJSpeech dataset](https://keithito.com/LJ-Speech-Dataset/).
-2. Put LJSpeech dataset in `data`.
-3. Unzip `alignments.zip`.
-4. Put [Nvidia pretrained waveglow model](https://drive.google.com/file/d/1WsibBTsuRg_SF2Z6L6NFRTT-NjEy1oTx/view?usp=sharing) in the `waveglow/pretrained_model` and rename as `waveglow_256channels.pt`;
-5. Run `python3 preprocess.py`.
+2. Put LJSpeech dataset in `data`. 
+3. Unzip `alignments.zip`. The directory should look like the following:
+```
+data
+├── README
+├── __pycache__
+│   └── ljspeech.cpython-38.pyc
+├── ljspeech.py
+├── metadata.csv
+├── train.txt
+└── wavs
+    ├── LJ001-0001.wav
+    ├── LJ001-0002.wav
+    ...
+    └── LJ050-0278.wav
+```
+4. Run `python3 preprocess.py`.
 
-## Training
-Run `python3 train.py`.
+## Prepare FloWaveNet Model
+1. Make directory `pretrained_model` under `flowavenet`. For Linux, MacOS user: `mkdir flowavenet/pretrained_model`.
+2. Download pretrained model from [here](https://drive.google.com/drive/folders/1OtacR02ecsFhyqXMwHJdDTKKQ-lWx390?usp=sharing).
+3. Put it under `pretrained_model`.
 
-## Evaluation
-Run `python3 eval.py`.
+## Setup Environment
+Please check the [Pytorch]() website if CUDA version needs to be downloaded.
+```
+conda create -n fastspeech python=3.8.0
+conda activate fastspeech
+conda install --file requirements.txt -c pytorch -c defaults -c anaconda
+```
 
-## Notes
-- In the paper of FastSpeech, authors use pre-trained Transformer-TTS model to provide the target of alignment. I didn't have a well-trained Transformer-TTS model so I use Tacotron2 instead.
-- I use the same hyper-parameter as [FastSpeech2](https://arxiv.org/abs/2006.04558).
-- The examples of audio are in `sample`.
-- [pretrained model](https://drive.google.com/file/d/1vMrKtbjPj9u_o3Y-8prE6hHCc6Yj4Nqk/view?usp=sharing).
-
-## Reference
-
-### Repository
-- [The Implementation of Tacotron Based on Tensorflow](https://github.com/keithito/tacotron)
-- [The Implementation of Transformer Based on Pytorch](https://github.com/jadore801120/attention-is-all-you-need-pytorch)
-- [The Implementation of Transformer-TTS Based on Pytorch](https://github.com/xcmyz/Transformer-TTS)
-- [The Implementation of Tacotron2 Based on Pytorch](https://github.com/NVIDIA/tacotron2)
-- [The Implementation of FastSpeech2 Based on Pytorch](https://github.com/ming024/FastSpeech2)
-
-### Paper
-- [Tacotron2](https://arxiv.org/abs/1712.05884)
-- [Transformer](https://arxiv.org/abs/1706.03762)
-- [FastSpeech](https://arxiv.org/abs/1905.09263)
-- [FastSpeech2](https://arxiv.org/abs/2006.04558)
+## Synthesize
+The result will be written into `results/${step}_${flowavenets_step}`. Please change `flowavenet_step` according to the file downloaded from [Prepare FloWaveNet Model](#prepare-flowavenet-model) to synthesize audio in different quality.
+```
+python synthesize.py --file text.txt --step 135000 --flowavenet_step 126764
+```
