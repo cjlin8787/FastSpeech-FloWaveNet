@@ -69,7 +69,7 @@ if __name__ == "__main__":
         np.save(mel_path, mel.numpy().astype(np.float32))
         audio.tools.inv_mel_spec(mel, wav_path)
         flowavenet.inference(
-            wav_path, mel_path, f"results/"+str(args.step)+"_"+str(i)+"_flowavenet_audio.wav"
+            wav_path, mel_path, os.path.join(outdir, f'{i}_flowavenet_audio.wav')
         )
         print("Done", i + 1)
 
