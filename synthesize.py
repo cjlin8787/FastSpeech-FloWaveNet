@@ -72,7 +72,7 @@ if __name__ == "__main__":
             wav_path, mel_path, os.path.join(outdir, f'{i}_flowavenet_audio.wav')
         )
         print("Done", i + 1)
-
+'''
     s_t = time.perf_counter()
     for i in range(100):
         for _, phn in enumerate(data_list):
@@ -80,3 +80,4 @@ if __name__ == "__main__":
         print(i)
     e_t = time.perf_counter()
     print((e_t - s_t) / 100.)
+'''
