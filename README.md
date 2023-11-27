@@ -8,7 +8,8 @@ This repository is adapted from [FastSpeech-Pytorch](https://github.com/xcmyz/Fa
 ## Setup Environment
 Please check the [Pytorch](https://pytorch.org) website if CUDA version needs to be downloaded.
 ```
-conda create -n fastspeech python=3.8.0
+conda create -n fastspeech python=3.8
+conda config --add channels conda-forge
 conda activate fastspeech
 conda install --file requirements.txt -c pytorch -c defaults -c anaconda -c conda-forge
 ```
